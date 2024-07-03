@@ -12,7 +12,7 @@ export default function Movie({ title, desc, actors, director, genre, setMsg, se
   async function removeMovie(movieName) {
     try {
       const response = await fetch(
-        `http://localhost:4500/Remove/${movieName}`,
+        `https://cinewallet.onrender.com/Remove/${movieName}`,
         {
           method: 'DELETE'
         }

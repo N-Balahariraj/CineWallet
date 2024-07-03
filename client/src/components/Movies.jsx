@@ -12,7 +12,7 @@ export default function Movies({ setNewMovie, setOverlay, search }) {
 
     //Fetching movies data
     useEffect(() => {
-        fetch('http://localhost:4500/View')
+        fetch('https://cinewallet.onrender.com/View')
             .then((response) => response.json())
             .then((data) => {setMoviesData(data); setFilMovies(data)})
             .catch((error) => console.error('Error fetching data:', error));

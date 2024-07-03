@@ -33,7 +33,7 @@ export default function AddMovie({ newMovie, setOverlay }) {
     async function addMovie(e) {
         console.log(e.target[0].value)
         try {
-            const response = await fetch('http://localhost:4500/Add', {
+            const response = await fetch('https://cinewallet.onrender.com/Add', {
                 method: 'POST',
                 body: JSON.stringify(getTargetValue(e)),
                 headers: {
@@ -58,7 +58,7 @@ export default function AddMovie({ newMovie, setOverlay }) {
     async function updateMovie(e) {
         try {
             const response = await fetch(
-                `http://localhost:4500/Edit/${newMovie[1][0]}`,
+                `https://cinewallet.onrender.com/Edit/${newMovie[1][0]}`,
                 {
                     method: 'PUT',
                     body: JSON.stringify(getTargetValue(e)),
