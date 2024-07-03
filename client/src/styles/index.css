@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.SlideIn{
+    width: 35%;
+    padding: 1.25rem;
+    margin-left: -35%;
+    opacity:0;
+    transition-property: margin-left, opacity;
+    transition-duration: 1s;   
+}
+
+.formField{
+    @apply h-[10%] w-[100%] flex justify-around items-center m-3 
+}
+
+.formTitle{
+    @apply h-[100%] w-[30%] p-1 font-semibold
+}
+
+.formInput{
+    @apply h-[100%] w-[60%] outline-none border-2 rounded-md p-1
+}
+
+.movieField{
+    @apply whitespace-nowrap overflow-x-auto scrollbar-hide h-[100%]
+}
+
+.shimDim{
+    @apply w-[18rem] h-[25rem] m-5 mb-28
+}
