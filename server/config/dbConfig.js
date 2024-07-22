@@ -1,16 +1,14 @@
 const mongoose = require('mongoose')
 
+const dbUrl = process.env.DATABASE_URL
+
 exports.ConnectToDb = async () =>{
     try{
-        await mongoose.connect("mongodb+srv://N-Balahariraj:1sdHLRnpjHN0iopD@cluster0.jrjjd5q.mongodb.net/") 
+        await mongoose.connect(dbUrl) 
         console.log("DB Connection established ;)")
-
-        const Port = 4500
-        app.listen(Port,()=>{
-            console.log(`Listening the server at port ${Port}...`)
-        })
     }
     catch(e){
         console.log("DB Connection Couldn't be established")
+        console.log("err :", e)
     }
 }

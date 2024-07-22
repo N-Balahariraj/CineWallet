@@ -1,10 +1,9 @@
 const movieController = require('../controllers/movie.controller')
-const middlewares = require('../middlewares')
+const token = require('../middlewares/verifyToken')
 
 module.exports = (app) => {
-    app.use(middlewares.verifyToken)
-    app.post('/Add',movieController.create)
-    app.get('/View',movieController.read)
-    app.delete('/Remove/:title',movieController.delete)
-    app.put('/Edit/:title',movieController.update)
+    app.post('/Add',token.verifyAccessToken,movieController.create)
+    app.get('/View',token.verifyAccessToken,movieController.read)
+    app.delete('/Remove/:title',token.verifyAccessToken,movieController.delete)
+    app.put('/Edit/:title',token.verifyAccessToken,movieController.update)
 }
