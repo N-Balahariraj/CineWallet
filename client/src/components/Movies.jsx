@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Movie from './Movie'
 import { Alert } from 'react-bootstrap'
-import { ShimmerPostList } from "react-shimmer-effects";
 import Shimmer from './Shimmer';
 
 export default function Movies({ setNewMovie, setOverlay, search }) {
@@ -47,7 +46,7 @@ export default function Movies({ setNewMovie, setOverlay, search }) {
                     </Alert>
                 </div>
             }
-            <div className='w-[100%] h-[98%] flex flex-wrap m-2 overflow-y-auto'>
+            <div className='w-[100%] h-[98%] flex flex-wrap p-4 overflow-y-auto no-scrollbar'>
                 {
                     filMovies.length === 0
                         ? <Shimmer/>

@@ -46,13 +46,13 @@ export default function Movie({ title, desc, actors, director, genre, setMsg, se
       </ListGroup>
       <Card.Footer className='flex gap-3'>
         <button
-          className='h-10 w-[2.5rem] text-lg flex items-center justify-around bg-[#da4747] text-white rounded-md hover:bg-[#b94646]'
+          className='h-10 w-[2.5rem] text-lg flex items-center justify-around bg-[#f55757] text-white rounded-md hover:bg-[#b94646]'
           onClick={() => { removeMovie(title) }}
         >
           <ImBin />
         </button>
         <button
-          className='h-10 w-[2.5rem] text-xl flex items-center justify-around bg-[#da4747] text-white rounded-md hover:bg-[#b94646]'
+          className='h-10 w-[2.5rem] text-xl flex items-center justify-around bg-[#f55757] text-white rounded-md hover:bg-[#b94646]'
           onClick={() => {
             if (edit) {
               setNewMovie([true, [title, desc, actors, director, genre]])

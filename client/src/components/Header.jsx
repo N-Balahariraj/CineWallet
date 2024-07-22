@@ -9,9 +9,9 @@ export default function Header({setOverlay, setSearch}) {
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container fluid>
-        <Navbar.Brand><span className='text-[red] font-semibold font'>MyMovieCollection</span></Navbar.Brand>
+        <Navbar.Brand><span className='text-[#f55757] font-semibold font'>CineWallet</span></Navbar.Brand>
         <button 
-          className='h-9 w-[10%] flex items-center justify-around bg-[#da4747] text-white rounded-md hover:bg-[#b94646]' 
+          className='h-9 w-[10%] flex items-center justify-around bg-[#f55757] text-white rounded-md hover:bg-[#d44f4f]' 
           onClick={() => {setOverlay(true)}}
         >
           <span>New Movies</span>
@@ -26,7 +26,7 @@ export default function Header({setOverlay, setSearch}) {
           />
           <Button variant='danger' type='submit'>Search</Button>
         </Form>
-        <Nav.Link href="#action2" className='w-[10%]'>Login</Nav.Link>
+        <Nav.Link href="#action2" className='w-[10%]'>Logout</Nav.Link>
       </Container>
     </Navbar>
   );
