@@ -1,8 +1,13 @@
 const jwt = require('jsonwebtoken')
 const userModal = require('../models/user.model')
+require('dotenv').config()
 
 const verifyAccessToken = async (req,res,next)=>{
-    const [tokenStd, tokenValue] = req?.headers?.authorization?.split(" ")
+    if(req.headers.authorization === undefined){
+        res.status(403).send({message : "User has not registered"})
+        return;
+    }
+    const [tokenStd, tokenValue] = req.headers.authorization.split(" ")
     const secKey = process.env.ACCESS_TOKEN_SECRET
     if(tokenStd !== 'JWT'){
         res.status(403).send({message:"The token is not a valid JWT"})
@@ -26,7 +31,11 @@ const verifyAccessToken = async (req,res,next)=>{
 }
 
 const verifyRefreshToken = async (req,res,next)=>{
-    const [tokenStd, tokenValue] = req?.headers?.authorization?.split(" ")
+    if(req.headers.authorization === undefined){
+        res.status(403).send({message : "User has not registered"})
+        return;
+    }
+    const [tokenStd, tokenValue] = req.headers.authorization.split(" ")
     const secKey = process.env.REFRESH_TOKEN_SECRET
     if(tokenStd !== 'JWT'){
         res.status(403).send({message:"The token is not a valid JWT"})

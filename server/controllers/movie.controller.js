@@ -1,82 +1,117 @@
 const moviesModel = require("../models/movie.model");
+const userModal = require("../models/user.model");
 
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
   const { title, desc, actors, director, genre } = req.body;
-  const newMovie = new moviesModel({ title, desc, actors, director, genre });
 
-  moviesModel.findOne({ title: title }).then((result) => {
-    if (result) {
-      res.status(403).json({ message: "The movie already exist" });
+  try {
+    const user = await userModal.findById(req.user.id);
+    if (user.movies.includes(title)) {
+      res.status(409).send({ message: "The movie already exist" });
       return;
     }
-
-    newMovie
-      .save()
-      .then((result) => {
-        if (!result) res.status(400).json({ message: "Something went wrong" });
-        res.status(200).send(result);
-      })
-      .catch((err) =>
-        res.status(500).send({ message: "Server not available", error: err })
-      );
-  });
-};
-
-exports.read = (req, res) => {
-  moviesModel
-    .find()
-    .then((result) => {
-      res.status(200).json(result);
-    })
-    .catch((err) => {
-      res.status(500).json({
-        status: "failure",
-        message: "could not fetch details",
-        error: err,
+    const movie = await moviesModel.findOne({title})
+    if(!movie){
+      const newMovie = await moviesModel.create({
+        title,
+        desc,
+        actors,
+        director,
+        genre,
       });
-    });
+      if (!newMovie) {
+        res
+          .status(500)
+          .send({ message: "Server error, unable to add movie try again later" });
+        return;
+      }
+    }
+    
+    user.movies.push(title);
+    const movieStatus = await user.save();
+    res
+      .status(200)
+      .send({ message: "Movie saved successfully", result: movieStatus });
+  } 
+  
+  catch (error) {
+    console.log("err : ", error);
+    res.status(500).send({ message: "Server error, please try again later" });
+  }
 };
 
-exports.delete = (req, res) => {
-  const title = req.params.title;
-  moviesModel
-    .findOneAndDelete({ title: title })
-    .then((result) => {
-      res
-        .status(200)
-        .json({status:200, message: "The movie was removed successfully", data: result });
-    })
-    .catch((e) => {
-      res.status(500).json({status:500, message: "something went wrong :{ ", error: e });
-    });
+exports.read = async (req, res) => {
+  
+  try {
+    const user = await userModal.findById({_id : req.user.id})
+    if(!user || !user.movies){
+      res.status(500).send({message : "Server error"})
+      return;
+    }
+    const movies = await moviesModel.find({title:{$in : user.movies}})
+    if(!movies){
+      res.status(500).send({message : "Server error"})
+      return;
+    }
+    res.status(200).send({message : "Movies retrieved successfully", result : movies})
+  } 
+  catch (error) {
+    console.log("err : ",error)
+    res.status(500).send({message: "Server error"})
+  }
 };
 
-exports.update = (req, res) => {
+exports.update = async (req, res) => {
   const oriTitle = req.params.title;
   const { title, desc, actors, director, genre } = req.body;
-  moviesModel
-    .findOneAndUpdate(
+
+  try {
+    const result = await moviesModel.findOneAndUpdate(
       { title: oriTitle },
-      {
-        $set: {
-          title,
-          desc,
-          actors,
-          director,
-          genre,
-        },
-      },
-    )
-    .then((result) => {
-      res.status(200).json({
-        status: 200,
-        message: "Movie details updated successfully :)",
-        result: result,
-      });
-    })
-    .catch((e) => {
-      res
-        .status(500)
-        .json({status:500, message: "Unable to update the movie details", err: e });
-    });
+      { $set: { title, desc, actors, director, genre } },
+      { new: true } 
+    );
+    if (!result) {
+      res.status(500).send({ message: "Server error" });
+      return;
+    }
+    res.status(200).send({ message: "Movie details updated successfully :)", result : result });
+  } 
+  
+  catch (error) {
+    console.log("err : ",error)
+    res
+      .status(500)
+      .json({ message: "Server error", err: error });
+  }
+};
+
+exports.delete = async (req, res) => {
+  const title = req.params.title;
+  const userId = req.user.id
+  
+  try {
+    const user = await userModal.findById({_id:userId})
+    if(!user){
+      res.status(500).send({message : "Server error"})
+      return;
+    }
+    const movieIndex = user.movies.indexOf(title)
+    if(movieIndex === -1){
+      res.status(404).send({message : "The movie does not exist"})
+      return;
+    }
+    const deletedMovies =user.movies.splice(movieIndex,1)
+    if(!deletedMovies){
+      res.status(500).send({message : "Server error"})
+      return;
+    }
+    const movieStatus = await user.save()
+    res.status(200).send({message : "Movie deleted successfully", result : [deletedMovies, movieStatus]})
+  } 
+  
+  catch (error) {
+    console.log("err : ",error)
+    res.status(500).send({message : "Server error"})
+  }
 };

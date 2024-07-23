@@ -1,6 +1,7 @@
 const userModal = require("../models/user.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+require('dotenv').config()
 
 exports.Register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -77,7 +78,7 @@ exports.AccessRefresh = async (req, res) => {
       id: req.user._id,
       name: req.user.name,
     },
-    process.env.REFRESH_TOKEN_SECRET,
+    process.env.ACCESS_TOKEN_SECRET,
     {
       expiresIn: "15m",
     }
