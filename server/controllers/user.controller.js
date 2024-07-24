@@ -62,10 +62,14 @@ exports.Login = async (req, res) => {
     res.cookie("ACCESS_TOKEN", accessToken, {
       secure: true,
       sameSite: "Lax",
+      Domain: "https://cinewallet.netlify.app",
+      Path: "/app",
     });
     res.cookie("REFRESH_TOKEN", refreshToken, {
       secure: true,
       sameSite: "Lax",
+      Domain: "https://cinewallet.netlify.app",
+      Path: "/app",
     });
     res.status(200).send({ message: "Login Successfull" });
   } catch (e) {
@@ -88,6 +92,8 @@ exports.AccessRefresh = async (req, res) => {
   res.cookie("ACCESS_TOKEN", freshToken, {
     secure: true,
     sameSite: "lax",
+    Domain: "https://cinewallet.netlify.app",
+    Path: "/app",
   });
   res.status(200).send({ message: "Refreshed access token" });
 };
