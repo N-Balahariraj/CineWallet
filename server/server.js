@@ -2,12 +2,16 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
+const cookieParser = require('cookie-parser')
 const DbConnection = require('./config/dbConfig.js')
 
 // Creating App
 const app = express()
 app.use(bodyParser.json())
-app.use(cors())
+app.use(cors({
+    credentials : true
+}))
+app.use(cookieParser())
 require('dotenv').config();
 
 // DB Connection

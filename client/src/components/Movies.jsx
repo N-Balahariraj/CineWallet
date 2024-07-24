@@ -14,14 +14,15 @@ export default function Movies({ setNewMovie, setOverlay, search }) {
     useEffect(() => {
         const accessToken = Cookies.get('ACCESS_TOKEN')
 
-        fetch('https://cinewallet.onrender.com/View', {
+        fetch(`${process.env.REACT_APP_GLOBALHOST}/View`, {
+            method : 'GET',
             headers: {
                 "content-type": "application/json; charset=UTF-8",
                 "authorization": `JWT ${accessToken}`
             }
         })
             .then((response) => response.json())
-            .then((data) => { setMoviesData(data); setFilMovies(data) })
+            .then((data) => { setMoviesData(data.result); setFilMovies(data.result);})
             .catch((error) => console.error('Error fetching data:', error));
     }, [])
 
@@ -56,9 +57,9 @@ export default function Movies({ setNewMovie, setOverlay, search }) {
             }
             <div className='w-[100%] h-[98%] flex flex-wrap p-4 overflow-y-auto no-scrollbar'>
                 {
-                    filMovies.length === 0
-                        ? <Shimmer />
-                        : filMovies?.map((M) => <Movie key={M._id} title={M.title} desc={M?.desc} actors={M?.actors} director={M?.director} genre={M?.genre} setMsg={setMsg} setAlert={setAlert} setNewMovie={setNewMovie} setOverlay={setOverlay} />)
+                    filMovies.length
+                        ? filMovies?.map((M) => <Movie key={M._id} title={M.title} desc={M?.desc} actors={M?.actors} director={M?.director} genre={M?.genre} setMsg={setMsg} setAlert={setAlert} setNewMovie={setNewMovie} setOverlay={setOverlay} />)
+                        : <Shimmer />
                 }
             </div>
         </>

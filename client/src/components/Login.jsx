@@ -25,8 +25,9 @@ export default function Login({setLog}) {
 
     if (loginValidation(email, password)) {
       try {
-        const res = await fetch("https://cinewallet.onrender.com/login", {
+        const res = await fetch(`${process.env.REACT_APP_GLOBALHOST}/login`, {
           method: 'POST',
+          credentials: 'include',
           headers: {
             "Content-Type": "application/json",
           },
@@ -35,10 +36,9 @@ export default function Login({setLog}) {
             password: password
           })
         })
-        if (!res.ok) throw new Error(res.status)
+        if (!res.ok) throw new Error(res.status, res.statusText)
         const data = await res.json()
         setStatus([true, data.message])
-        setLog('In')
         navigate('/app')
         console.log(data)
       }

@@ -4,13 +4,6 @@ export function registerValidation( name, email, password ) {
   const emailRegex = /^[\w.-]+@[\w.-]+\.\w{2,3}$/
   const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@!#$%&?])[A-Za-z\d@!#$%&?]{8,}$/
 
-  console.log("Validation : ",
-  {
-    name: name,
-    email:email,
-    password : password
-  })
-
   if(!(nameRegex.test(name)))
     return [false,"Enter a valid name"]
 

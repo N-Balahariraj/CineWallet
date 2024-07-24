@@ -14,7 +14,7 @@ export default function Movie({ title, desc, actors, director, genre, setMsg, se
     const accessToken = Cookies.get('ACCESS_TOKEN')
     try {
       const response = await fetch(
-        `https://cinewallet.onrender.com/Remove/${movieName}`,
+        `${process.env.REACT_APP_GLOBALHOST}/Remove/${movieName}`,
         {
           method: 'DELETE',
           headers: {

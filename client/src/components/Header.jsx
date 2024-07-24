@@ -1,22 +1,24 @@
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
-import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
 import { CiSquarePlus } from "react-icons/ci";
+import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie'
 
 export default function Header({setOverlay, setSearch}) {
+  const navigate = useNavigate()
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container fluid>
         <Navbar.Brand><span className='text-[#f55757] font-semibold font'>CineWallet</span></Navbar.Brand>
-        <button 
-          className='h-9 w-[10%] flex items-center justify-around bg-[#f55757] text-white rounded-md hover:bg-[#d44f4f]' 
+        <Button 
+          variant='danger' 
           onClick={() => {setOverlay(true)}}
         >
-          <span>New Movies</span>
-          <CiSquarePlus className='text-xl' />
-        </button>
+          <span className='flex justify-around items-center gap-2'>New Movies <CiSquarePlus className='text-xl' /></span>
+          
+        </Button>
         <Form className="d-flex w-[60%]" onSubmit={(e)=>{e.preventDefault(); setSearch(e.target[0].value);}}>
           <Form.Control
             type="search"
@@ -26,7 +28,16 @@ export default function Header({setOverlay, setSearch}) {
           />
           <Button variant='danger' type='submit'>Search</Button>
         </Form>
-        <Nav.Link href="#action2" className='w-[10%]'>Logout</Nav.Link>
+        <Button 
+        variant='danger'
+        onClick={()=>{
+          Cookies.remove('ACCESS_TOKEN')
+          Cookies.remove('REFRESH_TOKEN')
+          navigate('/')
+        }}
+        >
+          Log Out
+        </Button>
       </Container>
     </Navbar>
   );

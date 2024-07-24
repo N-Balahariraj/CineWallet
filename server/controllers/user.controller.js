@@ -18,9 +18,7 @@ exports.Register = async (req, res) => {
       password: bcrypt.hashSync(password, 10),
     });
     const NewUser = await newUser.save();
-    res
-      .status(201)
-      .send({ message: "User registred successfully" });
+    res.status(201).send({ message: "User registred successfully" });
   } catch (e) {
     console.log("err : ", e);
     res.status(500).send({ message: "Server error", err: e });
@@ -29,7 +27,7 @@ exports.Register = async (req, res) => {
 
 exports.Login = async (req, res) => {
   const { email, password } = req.body;
-  
+
   try {
     const user = await userModal.findOne({ email });
     if (!user) {
@@ -61,12 +59,16 @@ exports.Login = async (req, res) => {
       process.env.REFRESH_TOKEN_SECRET,
       { expiresIn: "24h" }
     );
-    res.cookie('ACCESS_TOKEN', accessToken, { httpOnly: true, secure: true, domain:"https://cinewallet.netlify.app", path:"/app" });
-    res.cookie('REFRESH_TOKEN', refreshToken, { httpOnly: true, secure: true });
-    res.status(200).send({message: "Login Successfull",});
-  } 
-  
-  catch (e) {
+    res.cookie("ACCESS_TOKEN", accessToken, {
+      secure: true,
+      sameSite: "Lax",
+    });
+    res.cookie("REFRESH_TOKEN", refreshToken, {
+      secure: true,
+      sameSite: "Lax",
+    });
+    res.status(200).send({ message: "Login Successfull" });
+  } catch (e) {
     console.log("err : ", e);
     res.status(500).send({ message: "Server Error" });
   }
@@ -83,6 +85,9 @@ exports.AccessRefresh = async (req, res) => {
       expiresIn: "15m",
     }
   );
-  res.cookie('ACCESS_TOKEN', freshToken, { httpOnly: true, secure: true, domain:"https://cinewallet.netlify.app", path:"/app" });
-  res.status(200).send({message: "Refreshed access token"});
+  res.cookie("ACCESS_TOKEN", freshToken, {
+    secure: true,
+    sameSite: "lax",
+  });
+  res.status(200).send({ message: "Refreshed access token" });
 };

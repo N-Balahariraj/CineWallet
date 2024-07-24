@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AddMovie from "./AddMovie";
 import Header from "./Header";
 import Movies from "./Movies";

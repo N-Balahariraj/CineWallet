@@ -23,17 +23,19 @@ export default function Register() {
     setStatus(registerValidation(name, email, password))
     if (password == checkPass && registerValidation(name, email, password)[0]) {
       try {
-        const res = await fetch('https://cinewallet.onrender.com/register', {
+        const res = await fetch(`${process.env.REACT_APP_GLOBALHOST}/register`, {
           method: 'POST',
+          credentials : 'include',
           headers: {
-            contentType: 'Application/json'
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            name, email, password
+            name : name, 
+            email : email, 
+            password : password
           })
         })
-        if (!res.ok)
-          throw new Error(res.status)
+        // if (!res.ok) throw new Error(res.status)
         const data = await res.json()
         console.log(data.message)
         setStatus([true, data.message+" ,Login to enter your wallet"])
