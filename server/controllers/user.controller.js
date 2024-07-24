@@ -1,7 +1,7 @@
 const userModal = require("../models/user.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-require('dotenv').config()
+require("dotenv").config();
 
 exports.Register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -20,7 +20,7 @@ exports.Register = async (req, res) => {
     const NewUser = await newUser.save();
     res
       .status(201)
-      .send({ message: "User registred successfully", result: NewUser });
+      .send({ message: "User registred successfully" });
   } catch (e) {
     console.log("err : ", e);
     res.status(500).send({ message: "Server error", err: e });
@@ -29,6 +29,7 @@ exports.Register = async (req, res) => {
 
 exports.Login = async (req, res) => {
   const { email, password } = req.body;
+  
   try {
     const user = await userModal.findOne({ email });
     if (!user) {
@@ -60,14 +61,13 @@ exports.Login = async (req, res) => {
       process.env.REFRESH_TOKEN_SECRET,
       { expiresIn: "24h" }
     );
-    res.status(200).send({
-      message: "Login Successfull",
-      data: user,
-      accessToken: accessToken,
-      refreshToken: refreshToken,
-    });
-  } catch (e) {
-    console.error("err : ", e);
+    res.cookie('ACCESS_TOKEN', accessToken, { httpOnly: true, secure: true, domain:"https://cinewallet.netlify.app", path:"/app" });
+    res.cookie('REFRESH_TOKEN', refreshToken, { httpOnly: true, secure: true });
+    res.status(200).send({message: "Login Successfull",});
+  } 
+  
+  catch (e) {
+    console.log("err : ", e);
     res.status(500).send({ message: "Server Error" });
   }
 };
@@ -83,5 +83,6 @@ exports.AccessRefresh = async (req, res) => {
       expiresIn: "15m",
     }
   );
-  res.status(200).send({message: "Refreshed access token", user: req.user, accessToken: freshToken})
+  res.cookie('ACCESS_TOKEN', freshToken, { httpOnly: true, secure: true, domain:"https://cinewallet.netlify.app", path:"/app" });
+  res.status(200).send({message: "Refreshed access token"});
 };

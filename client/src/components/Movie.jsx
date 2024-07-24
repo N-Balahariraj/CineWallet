@@ -4,17 +4,23 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import { ImBin } from "react-icons/im";
 import { MdEdit } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
+import Cookies from 'js-cookie'
 
 export default function Movie({ title, desc, actors, director, genre, setMsg, setAlert, setNewMovie, setOverlay }) {
 
   const [edit, cancel] = useState(true)
 
   async function removeMovie(movieName) {
+    const accessToken = Cookies.get('ACCESS_TOKEN')
     try {
       const response = await fetch(
         `https://cinewallet.onrender.com/Remove/${movieName}`,
         {
-          method: 'DELETE'
+          method: 'DELETE',
+          headers: {
+            "content-type": "application/json; charset=UTF-8",
+            "authorization": `JWT ${accessToken}`
+          }
         }
       )
       const result = response.json()
@@ -59,7 +65,7 @@ export default function Movie({ title, desc, actors, director, genre, setMsg, se
               cancel(!edit)
               setOverlay(true)
             }
-            else{
+            else {
               setNewMovie([false, []])
               cancel(!edit)
               // setOverlay(false)

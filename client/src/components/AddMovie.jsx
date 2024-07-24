@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import { IoCloseOutline } from "react-icons/io5";
+import Cookies from 'js-cookie'
 
 
 export default function AddMovie({ newMovie, setOverlay }) {
 
     const [msg, setMsg] = useState([])
     const [alert, setAlert] = useState(false)
+    const accessToken = Cookies.get('ACCESS_TOKEN')
 
     const getTargetValue = (e) => {
         if (e.target[0].value != '')
@@ -37,7 +39,8 @@ export default function AddMovie({ newMovie, setOverlay }) {
                 method: 'POST',
                 body: JSON.stringify(getTargetValue(e)),
                 headers: {
-                    "Content-type": "application/json; charset=UTF-8"
+                    "Content-type": "application/json; charset=UTF-8",
+                    "authorization": `JWT ${accessToken}`
                 }
             })
             const result = await response.json()
@@ -63,7 +66,8 @@ export default function AddMovie({ newMovie, setOverlay }) {
                     method: 'PUT',
                     body: JSON.stringify(getTargetValue(e)),
                     headers: {
-                        "content-type": "application/json; charset=UTF-8"
+                        "content-type": "application/json; charset=UTF-8",
+                        "authorization": `JWT ${accessToken}`
                     }
                 }
             )
