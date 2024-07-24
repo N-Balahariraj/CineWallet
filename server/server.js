@@ -9,8 +9,10 @@ const DbConnection = require('./config/dbConfig.js')
 const app = express()
 app.use(bodyParser.json())
 app.use(cors({
+    origin : "https://cinewallet.netlify.app",
     credentials : true
 }))
+app.set("trust proxy",1)
 app.use(cookieParser())
 require('dotenv').config();
 
