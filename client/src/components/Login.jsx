@@ -10,6 +10,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { loginValidation } from "../Utilities/authValidation"
 import Alert from 'react-bootstrap/Alert';
+import Cookies from 'js-cookie'
 
 export default function Login({setLog}) {
 
@@ -41,6 +42,7 @@ export default function Login({setLog}) {
         setStatus([true, data.message])
         navigate('/app')
         console.log(data)
+        console.log(Cookies.get('ACCESS_TOKEN'))
       }
 
       catch (error) {

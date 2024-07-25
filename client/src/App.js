@@ -13,6 +13,7 @@ function App() {
 
   useEffect(()=>{
     if(Cookies.get('ACCESS_TOKEN')) setLog(true)
+    // console.log(Cookies.get('ACCESS_TOKEN'))
   },[])
 
   return (

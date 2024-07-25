@@ -9,7 +9,7 @@ const DbConnection = require('./config/dbConfig.js')
 const app = express()
 app.use(bodyParser.json())
 app.use(cors({
-    origin : "https://cinewallet.netlify.app",
+    origin : ["https://cinewallet.netlify.app","http://localhost:3000"],
     credentials : true
 }))
 app.set("trust proxy",1)
