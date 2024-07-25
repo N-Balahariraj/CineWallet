@@ -3,6 +3,14 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
+const CookieOptions = {
+  secure: true,
+  sameSite: "None",
+  partitioned : true,
+  Domain: "https://cinewallet.netlify.app",
+  Path: "/app",
+}
+
 exports.Register = async (req, res) => {
   const { name, email, password } = req.body;
   try {
@@ -59,18 +67,8 @@ exports.Login = async (req, res) => {
       process.env.REFRESH_TOKEN_SECRET,
       { expiresIn: "24h" }
     );
-    res.cookie("ACCESS_TOKEN", accessToken, {
-      secure: true,
-      sameSite: "None",
-      Domain: "https://cinewallet.netlify.app",
-      Path: "/app",
-    });
-    res.cookie("REFRESH_TOKEN", refreshToken, {
-      secure: true,
-      sameSite: "None",
-      Domain: "https://cinewallet.netlify.app",
-      Path: "/app",
-    });
+    res.cookie("ACCESS_TOKEN", accessToken, CookieOptions );
+    res.cookie("REFRESH_TOKEN", refreshToken, CookieOptions);
     res.status(200).send({ message: "Login Successfull" });
   } catch (e) {
     console.log("err : ", e);
@@ -89,11 +87,6 @@ exports.AccessRefresh = async (req, res) => {
       expiresIn: "15m",
     }
   );
-  res.cookie("ACCESS_TOKEN", freshToken, {
-    secure: true,
-    sameSite: "None",
-    Domain: "https://cinewallet.netlify.app",
-    Path: "/app",
-  });
+  res.cookie("ACCESS_TOKEN", freshToken, CookieOptions);
   res.status(200).send({ message: "Refreshed access token" });
 };
