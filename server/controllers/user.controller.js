@@ -61,13 +61,13 @@ exports.Login = async (req, res) => {
     );
     res.cookie("ACCESS_TOKEN", accessToken, {
       secure: true,
-      sameSite: "Lax",
+      sameSite: "None",
       Domain: "https://cinewallet.netlify.app",
       Path: "/app",
     });
     res.cookie("REFRESH_TOKEN", refreshToken, {
       secure: true,
-      sameSite: "Lax",
+      sameSite: "None",
       Domain: "https://cinewallet.netlify.app",
       Path: "/app",
     });
@@ -91,7 +91,7 @@ exports.AccessRefresh = async (req, res) => {
   );
   res.cookie("ACCESS_TOKEN", freshToken, {
     secure: true,
-    sameSite: "lax",
+    sameSite: "None",
     Domain: "https://cinewallet.netlify.app",
     Path: "/app",
   });
