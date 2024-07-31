@@ -32,7 +32,7 @@ export default function Movies({ setNewMovie, setOverlay, search }) {
             setFilMovies(moviesData)
             return
         }
-        const filteredMovies = moviesData.filter((M) => {
+        const filteredMovies = moviesData?.filter((M) => {
             return M.title.toLowerCase().includes(search.toLowerCase())
         })
         setFilMovies(filteredMovies)
@@ -57,7 +57,7 @@ export default function Movies({ setNewMovie, setOverlay, search }) {
             }
             <div className='w-[100%] h-[98%] flex flex-wrap p-4 overflow-y-auto no-scrollbar'>
                 {
-                    filMovies.length
+                    filMovies
                         ? filMovies?.map((M) => <Movie key={M._id} title={M.title} desc={M?.desc} actors={M?.actors} director={M?.director} genre={M?.genre} setMsg={setMsg} setAlert={setAlert} setNewMovie={setNewMovie} setOverlay={setOverlay} />)
                         : <Shimmer />
                 }
